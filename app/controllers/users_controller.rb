@@ -7,7 +7,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @micropost = Micropost.find(params[:id])
     @pagy, @microposts = pagy(@user.microposts.order(id: :desc))
+    counts(@user)
     counts(@user)
   end
 
@@ -15,7 +17,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def create
+  def createmicropost
     @user = User.new(user_params)
 
     if @user.save
@@ -36,6 +38,14 @@ class UsersController < ApplicationController
   def followers
     @user = User.find(params[:id])
     @pagy, @followers = pagy(@user.followers)
+    counts(@user)
+  end
+  
+  def likes
+    @user = User.find(params[:id])
+    #@pagy, @likes = pagy(@user.likes)
+    @micropost = Micropost.find(params[:id])
+    @pagy, @microposts = pagy(@user.likes.order(id: :desc))
     counts(@user)
   end
 
